@@ -1,23 +1,30 @@
-import logo from './logo.svg';
 import './App.css';
+import { Routes, Route } from 'react-router-dom';
+
+// header
+import HeaderBar from './layout/HeaderBar';
+// page
+import MainPage from './pages/MainPage/MainPage';
+import ChartPage from './pages/ChartPage/ChartPage';
+import { useState } from 'react';
+
+/**
+ * 페이지 
+ * 프로젝트리스트 출력 페이지(메인)
+ * 차트 페이지
+ */
 
 function App() {
+  const [projectName, setProjectName] = useState(null);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='wrap'>
+      <Routes>
+        <Route path='/' element={<HeaderBar projectName={projectName}/>}>
+          <Route index element={<MainPage setProjectName={setProjectName}/>}/>
+          <Route path='/chart/:id' element={<ChartPage/>}/>
+        </Route>
+      </Routes>
     </div>
   );
 }
