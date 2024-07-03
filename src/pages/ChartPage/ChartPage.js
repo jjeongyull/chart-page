@@ -10,7 +10,7 @@ import MakeJsonFunction from '../../util/makeChartJson';
 
 const ChartPage = () => {
   const [chartData, setChartData] = useState(null); // 차트데이터
-  const [chartType, setChartType] = useState('line'); // 기본 차트 유형 설정
+  const [chartType, setChartType] = useState('bar'); // 기본 차트 유형 설정
   const [activeMonth, setActiveMonth] = useState(null); // 활성화된 월 상태
 
   const [userKpiCountList, setUserKpiCountList] = useState(null); // 월별 kpi카운트
@@ -38,13 +38,13 @@ const ChartPage = () => {
 
   if (userKpiLoading || planKpiLoading || categoryLoading) return <p>Loading...</p>;
   if (userKpiError) {
-    return <p>Error in userKpiCount query: {userKpiError.message}</p>;
+    return <p>Error in userKpiCount query: {userKpiErrorData.message}</p>;
   }
   if (planKpiError) {
-    return <p>Error in planKpiCount query: {planKpiError.message}</p>;
+    return <p>Error in planKpiCount query: {planKpiErrorData.message}</p>;
   }
   if (categoryError) {
-    return <p>Error in category query: {categoryError.message}</p>;
+    return <p>Error in category query: {categoryErrorData.message}</p>;
   }
   // =================================================================================
 
@@ -86,8 +86,8 @@ const ChartPage = () => {
           chartData ? (
             <div className='chart-div'>
               <div className='chart-btn-list'>
-                <button onClick={() => changeChartType('line')}>Line Chart</button>
                 <button onClick={() => changeChartType('bar')}>Bar Chart</button>
+                <button onClick={() => changeChartType('line')}>Line Chart</button>
                 <button onClick={() => changeChartType('area')}>Area Chart</button>
               </div>
               <ResponsiveContainer width="100%" height={500}>
