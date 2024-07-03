@@ -68,14 +68,16 @@ const ChartPage = () => {
     <div>
       <ul className='month-list'>
         {
-          monthList && monthList.map((items, index) => (
+          monthList.length !== 0 ? ( monthList.map((items, index) => (
             <li 
               onClick={() => viewChartMont(items)} 
               className={`month-list-li ${items === activeMonth ? 'active' : ''}`}
               key={index}>
                 {items}
             </li>
-          ))
+          )) ) : (
+            <li className='none-list'>사용자수가 등록되지 않은 프로젝트입니다.</li>
+          )
         }
       </ul>
 
@@ -111,7 +113,7 @@ const ChartPage = () => {
                   <Bar dataKey="realCount" name="사용자 수" fill="#8884d8">
                     {
                       chartData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.realCount > entry.plan_count ? '#ff0000' : '#8884d8'} />
+                        <Cell key={`cell-${index}`} fill={entry.realCount > entry.plan_count ? 'blue' : '#8884d8'} />
                       ))
                     }
                     <LabelList dataKey="realCount" position="middle" fill="red" />
