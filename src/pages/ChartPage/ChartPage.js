@@ -3,7 +3,7 @@ import './ChartPage.style.css';
 import { useParams } from 'react-router-dom';
 import { getData } from '../../util/api';
 import { useQuery } from 'react-query';
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } from 'recharts';
+import { LineChart, Cell, Line, LabelList, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } from 'recharts';
 
 // 함수
 import MakeJsonFunction from '../../util/makeChartJson';
@@ -54,9 +54,6 @@ const ChartPage = () => {
   const viewChartMont = (month) => {
 
     let chartDataList = MakeJsonFunction.makeChartData(userKpiCountList, planKpiCountList, categoryList, month);
-    console.log(chartDataList)
-    console.log(userKpiCountList)
-    console.log(planKpiCountList)
     setChartData(chartDataList);
     setActiveMonth(month);
   }
@@ -65,6 +62,7 @@ const ChartPage = () => {
   const changeChartType = (type) => {
     setChartType(type);
   }
+
 
   return (
     <div>
@@ -90,7 +88,7 @@ const ChartPage = () => {
                 <button onClick={() => changeChartType('bar')}>Bar Chart</button>
                 <button onClick={() => changeChartType('area')}>Area Chart</button>
               </div>
-              <ResponsiveContainer width="100%" height={400}>
+              <ResponsiveContainer width="100%" height={500}>
                 {chartType === 'line' && (
                   <LineChart data={chartData}>
                     <CartesianGrid strokeDasharray="3 3" />
@@ -104,16 +102,27 @@ const ChartPage = () => {
                   </LineChart>
                 )}
                 {chartType === 'bar' && (
-                  <BarChart data={chartData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="realCount" name="사용자 수" fill="#8884d8" />
-                    <Bar dataKey="plan_count" name="목표 수" fill="#f17c7c" />
-                    <Bar dataKey="org_count" name="수행전 수" fill="#000" />
-                  </BarChart>
+                 <BarChart data={chartData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name"/>
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="realCount" name="사용자 수" fill="#8884d8">
+                    {
+                      chartData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.realCount > entry.plan_count ? '#ff0000' : '#8884d8'} />
+                      ))
+                    }
+                    <LabelList dataKey="realCount" position="middle" fill="red" />
+                  </Bar>
+                  <Bar dataKey="plan_count" name="목표 수" fill="#f17c7c">
+                    <LabelList dataKey="plan_count" position="middle" fill="red" />
+                  </Bar>
+                  <Bar dataKey="org_count" name="수행전 수" fill="#000">
+                    <LabelList dataKey="org_count" position="middle" fill="red"/>
+                  </Bar>
+               </BarChart>
                 )}
                 {chartType === 'area' && (
                   <AreaChart data={chartData}>
