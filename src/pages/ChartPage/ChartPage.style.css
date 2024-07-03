@@ -52,3 +52,9 @@
   font-size: 18px;
   font-weight: 700;
 }
+
+@media screen and (max-width: 750px) {
+  .month-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
